@@ -106,7 +106,6 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
       if (existingAccessory) {
         if (!!existingAccessory.context.isStored) {
           existingAccessory.context.remote = remote;
-          this.log.info('Updating accessory:', existingAccessory.displayName);
           this.api.updatePlatformAccessories([existingAccessory]);
         }
         existingAccessory.context.isStored = true;
