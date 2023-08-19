@@ -97,7 +97,7 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
 
   private updateAccessory = (
     remotes: Map<string, Remote>,
-    constructAccessory: (accessory: PlatformAccessory<{ remote: Remote }>, remote: Remote) => void
+    constructAccessory: (accessory: PlatformAccessory<{ remote: Remote }>, remote: Remote) => boolean
   ) => {
     remotes.forEach((remote) => {
       const uuid = this.api.hap.uuid.generate(remote.id);
@@ -151,12 +151,12 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
         switch (remote.tag) {
           case "button":
             new ButtonPlatformAccessory(this, accessory);
-            break;
+            return true
           case "toggle":
             new TogglePlatformAccessory(this, accessory);
-            break;
+            return true;;
           default:
-            break;
+            return false;
         }
       })
     } catch {
