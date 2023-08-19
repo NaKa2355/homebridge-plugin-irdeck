@@ -28,7 +28,7 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
     this.log.debug('Finished initializing platform:', this.config.name);
     this.log.info('PiRem API URL: ', this.config.piremUrl);
     this.log.info('Aim API URL: ', this.config.aimUrl);
-    this.log.info(`API polling interval: ${this.config.pollingIntervalMs} ms`)
+    this.log.info(`API polling interval: ${this.config.pollingIntervalMs} ms`);
     this.remotes = new Map();
     this.irdeckApi = new IrdeckApi(this.config.aimUrl as string, this.config.piremUrl as string);
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
@@ -41,7 +41,7 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
       this.discoverDevices();
       setInterval(() => {
         this.discoverDevices();
-      }, this.config.pollingIntervalMs)
+      }, this.config.pollingIntervalMs);
     });
   }
 
@@ -76,11 +76,11 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
               remote.getDeviceId(),
               buttons,
               remote.getTag(),
-              this.irdeckApi
-            )
-          )
+              this.irdeckApi,
+            ),
+          );
         } catch {
-          this.log.error("faild to get buttons of remote:" + remote.getName());
+          this.log.error('faild to get buttons of remote:' + remote.getName());
         }
       }
     }
@@ -91,20 +91,20 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
       if (!existingRemote) {
         this.remotes.delete(uuid);
       }
-    })
-  }
+    });
+  };
 
 
   private updateAccessory = (
     remotes: Map<string, Remote>,
-    constructAccessory: (accessory: PlatformAccessory<{ remote: Remote }>, remote: Remote) => boolean
+    constructAccessory: (accessory: PlatformAccessory<{ remote: Remote }>, remote: Remote) => boolean,
   ) => {
     remotes.forEach((remote) => {
       const uuid = this.api.hap.uuid.generate(remote.id);
       const existingAccessory = this.accessories.find(accessory => accessory.UUID === uuid);
 
       if (existingAccessory) {
-        if (!!existingAccessory.context.isStored) {
+        if (existingAccessory.context.isStored) {
           existingAccessory.context.remote = remote;
           this.api.updatePlatformAccessories([existingAccessory]);
         }
@@ -115,32 +115,32 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
       }
 
       //アクセサリがキャッシュにない場合
-      const accessory = new this.api.platformAccessory<{ remote: Remote, isStored: boolean }>(remote.name, uuid);
+      const accessory = new this.api.platformAccessory<{ remote: Remote; isStored: boolean}>(remote.name, uuid);
       accessory.context.remote = remote;
       accessory.context.isStored = true;
       this.log.info('Adding new accessory:', accessory.displayName);
       constructAccessory(accessory, remote);
-      this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory])
+      this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
       this.accessories.push(accessory);
-    })
+    });
 
     //アクセサリーにあって取得してきたデータにないアクセサリーを削除する
     for (let i = 0; i < this.accessories.length; i++) {
       const accessory = this.accessories[i];
       const uuid = accessory.UUID;
-      const exists = remotes.has(uuid)
+      const exists = remotes.has(uuid);
       if (!exists) {
-        this.log.info(`deleting accessory: ${accessory.displayName}`)
-        this.api.unregisterPlatformAccessories(PLATFORM_NAME, PLATFORM_NAME, [accessory])
-        this.accessories.splice(i, 1)
+        this.log.info(`deleting accessory: ${accessory.displayName}`);
+        this.api.unregisterPlatformAccessories(PLATFORM_NAME, PLATFORM_NAME, [accessory]);
+        this.accessories.splice(i, 1);
       }
     }
-  }
+  };
 
   /**
    * This is an example method showing how to register discovered accessories.
    * Accessories must only be registered once, previously created accessories
-   * must not be registered again to prevent "duplicate UUID" errors.
+   * must not be registered again to prevent 'duplicate UUID' errors.
    */
   async discoverDevices() {
     try {
@@ -148,18 +148,18 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
       // loop over the discovered devices and register each one if it has not already been registered
       this.updateAccessory(this.remotes, (accessory, remote) => {
         switch (remote.tag) {
-          case "button":
+          case 'button':
             new ButtonPlatformAccessory(this, accessory);
-            return true
-          case "toggle":
+            return true;
+          case 'toggle':
             new TogglePlatformAccessory(this, accessory);
-            return true;;
+            return true;
           default:
             return false;
         }
-      })
+      });
     } catch {
-      this.log.error("faild to fetch remotes");
+      this.log.error('faild to fetch remotes');
     }
   }
 }

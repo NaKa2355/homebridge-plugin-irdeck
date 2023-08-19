@@ -135,7 +135,5 @@ export class ExamplePlatformAccessory {
     // implement your own code to set the brightness
     this.exampleStates.Brightness = value as number;
     this.platform.log.debug('Set Characteristic Brightness -> ', value);
-    
   }
-
 }

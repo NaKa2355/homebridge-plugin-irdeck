@@ -48,9 +48,9 @@ export class TogglePlatformAccessory {
     // implement your own code to turn your device on/off
     this.state.On = value as boolean;
     if(this.state.On) {
-        this.accessory.context.remote.sendIr("on")
+      this.accessory.context.remote.sendIr('on');
     } else {
-        this.accessory.context.remote.sendIr("off")
+      this.accessory.context.remote.sendIr('off');
     }
   }
 

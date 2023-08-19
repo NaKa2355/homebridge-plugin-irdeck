@@ -11,7 +11,7 @@ import { Remote } from './remote';
 export class ButtonPlatformAccessory {
   private service: Service;
 
-  private timer: NodeJS.Timeout | undefined
+  private timer: NodeJS.Timeout | undefined;
 
   /**
    * These are just used to create a working example
@@ -51,10 +51,9 @@ export class ButtonPlatformAccessory {
    * Handle "SET" requests from HomeKit
    * These are sent when the user changes the state of an accessory, for example, turning on a Light bulb.
    */
-  async setOn(value: CharacteristicValue) {
+  async setOn(value: CharacteristicValue){
     // implement your own code to turn your device on/off
-    const on = !!value as boolean
-    
+    const on = !!value as boolean;
     this.state.On = value as boolean;
     this.state.On = false;
     if (this.timer) {
@@ -62,10 +61,9 @@ export class ButtonPlatformAccessory {
     }
 
     if (on) {
-      await this.accessory.context.remote.sendIr("push");
+      await this.accessory.context.remote.sendIr('push');
       this.platform.log.debug('Start switch timer');
       // Flip the light bulb state
-     
       this.timer = setTimeout(() => {
         // Turn off the switch
         this.state.On = false;
