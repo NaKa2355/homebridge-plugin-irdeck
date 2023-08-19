@@ -115,12 +115,13 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
       }
 
       //アクセサリがキャッシュにない場合
-      const accessory = new this.api.platformAccessory<{ remote: Remote; isStored: boolean}>(remote.name, uuid);
+      const accessory = new this.api.platformAccessory<{ remote: Remote; isStored: boolean }>(remote.name, uuid);
       accessory.context.remote = remote;
       accessory.context.isStored = true;
       this.log.info('Adding new accessory:', accessory.displayName);
-      constructAccessory(accessory, remote);
-      this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+      if (constructAccessory(accessory, remote)) {
+        this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+      }
       this.accessories.push(accessory);
     });
 
