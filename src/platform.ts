@@ -118,11 +118,11 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
       const accessory = new this.api.platformAccessory<{ remote: Remote; isStored: boolean }>(remote.name, uuid);
       accessory.context.remote = remote;
       accessory.context.isStored = true;
-      this.log.info('Adding new accessory:', accessory.displayName);
       if (constructAccessory(accessory, remote)) {
+        this.log.info('Adding new accessory:', accessory.displayName);
         this.api.registerPlatformAccessories(PLUGIN_NAME, PLATFORM_NAME, [accessory]);
+        this.accessories.push(accessory);
       }
-      this.accessories.push(accessory);
     });
 
     //アクセサリーにあって取得してきたデータにないアクセサリーを削除する
@@ -146,21 +146,21 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
   async discoverDevices() {
     try {
       await this.fetchRemotes();
-      // loop over the discovered devices and register each one if it has not already been registered
-      this.updateAccessory(this.remotes, (accessory, remote) => {
-        switch (remote.tag) {
-          case 'button':
-            new ButtonPlatformAccessory(this, accessory);
-            return true;
-          case 'toggle':
-            new TogglePlatformAccessory(this, accessory);
-            return true;
-          default:
-            return false;
-        }
-      });
     } catch {
       this.log.error('faild to fetch remotes');
     }
+
+    this.updateAccessory(this.remotes, (accessory, remote) => {
+      switch (remote.tag) {
+        case 'button':
+          new ButtonPlatformAccessory(this, accessory);
+          return true;
+        case 'toggle':
+          new TogglePlatformAccessory(this, accessory);
+          return true;
+        default:
+          return false;
+      }
+    });
   }
 }
