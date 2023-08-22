@@ -8,6 +8,8 @@ import { SendIrRequest } from 'irdeck-proto/gen/js/pirem/api/v1/pirem_service_pb
 import { IrData } from 'irdeck-proto/gen/js/pirem/api/v1/irdata_pb';
 
 import { Any } from 'google-protobuf/google/protobuf/any_pb';
+import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
+
 export class IrdeckApi {
   private readonly aimClient: AimServiceClient;
   private readonly piremClient: PiRemServiceClient;
@@ -16,6 +18,34 @@ export class IrdeckApi {
     this.aimClient = new AimServiceClient(aimUrl);
     this.piremClient = new PiRemServiceClient(piremUrl);
   }
+
+  public notifyUpdate = (
+    onAdd?: (remote: Remote) => void,
+    onDelete?: (remoteId: string) => void,
+    onUpdate?: (remote: Remote) => void,
+  ) => {
+    const stream = this.aimClient.notifyUpdate(new Empty());
+    stream.on('data', (res) => {
+      if (res.hasAdd()) {
+        const remote = res.getAdd()?.getRemote();
+        if (remote) {
+          onAdd?.(remote);
+        }
+      }
+      if (res.hasDelete()) {
+        const remoteId = res.getDelete()?.getRemoteId();
+        if(remoteId) {
+          onDelete?.(remoteId);
+        }
+      }
+      if (res.hasUpdate()) {
+        const remote = res.getUpdate()?.getRemote();
+        if (remote) {
+          onUpdate?.(remote);
+        }
+      }
+    });
+  };
 
   public getRemotes = () => {
     const promise = new Promise<Remote[]>((resolve, reject) => {

@@ -10,7 +10,7 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "irdeck-proto/*": ["./node_modules/irdeck-proto/*"]
+      "irdeck-proto/*": ["./node_modules/irdeck-proto.git/*"]
     },
     "declaration": true,
     "declarationMap": true,
