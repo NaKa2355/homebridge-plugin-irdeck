@@ -17,7 +17,7 @@ export class Remote {
     id: string,
     name: string,
     deviceId: string,
-    buttons: Button[],
+    buttons: Array<Button>,
     tag: string,
     irdeckApi: IrdeckApi,
   ) {
