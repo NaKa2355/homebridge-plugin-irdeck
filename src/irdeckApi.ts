@@ -1,5 +1,5 @@
-import { AimServiceClient } from 'irdeck-proto/gen/js/aim/api/v1/aim_service_grpc_web_pb';
 import { GetButtonsRequest, GetIrDataRequest } from 'irdeck-proto/gen/js/aim/api/v1/aim_service_pb';
+import { AimServiceClient } from 'irdeck-proto/gen/js/aim/api/v1/aim_service_grpc_web_pb';
 import { Remote } from 'irdeck-proto/gen/js/aim/api/v1/remote_pb';
 import { Button } from 'irdeck-proto/gen/js/aim/api/v1/button_pb';
 

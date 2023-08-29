@@ -1,7 +1,6 @@
 import { Service, PlatformAccessory, CharacteristicValue } from 'homebridge';
 
-import { ExampleHomebridgePlatform } from './platform';
-import { Remote } from './remote';
+import { AccessoryContext, ExampleHomebridgePlatform } from './platform';
 
 /**
  * Platform Accessory
@@ -21,7 +20,7 @@ export class TogglePlatformAccessory {
 
   constructor(
     private readonly platform: ExampleHomebridgePlatform,
-    private readonly accessory: PlatformAccessory<{remote: Remote}>,
+    private readonly accessory: PlatformAccessory<AccessoryContext>,
   ) {
     // set accessory information
     this.accessory.getService(this.platform.Service.AccessoryInformation)!
