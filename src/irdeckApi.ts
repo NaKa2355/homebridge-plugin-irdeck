@@ -1,6 +1,6 @@
-import { ListRemotesRequest, PushButtonRequest } from 'pirem-proto/gen/js/api/v1/pirem_service_pb'
+import { ListRemotesRequest, PushButtonRequest } from 'pirem-proto/gen/js/api/v1/pirem_service_pb';
 import { Remote } from 'pirem-proto/gen/js/api/v1/remote_pb';
-import { PiRemServiceClient } from 'pirem-proto/gen/js/api/v1/pirem_service_grpc_web_pb'
+import { PiRemServiceClient } from 'pirem-proto/gen/js/api/v1/pirem_service_grpc_web_pb';
 
 
 export class IrdeckApi {
@@ -26,16 +26,17 @@ export class IrdeckApi {
   };
 
   public pushButton = (buttonId: string) => {
-    const promise = new Promise((resolve, reject) => {
-      const req = new PushButtonRequest()
-      req.setButtonId(buttonId)
+    const promise = new Promise<void>((resolve, reject) => {
+      const req = new PushButtonRequest();
+      req.setButtonId(buttonId);
       this.piremClient.pushButton(req, {}, (err) => {
         if (err) {
           reject(err);
-          return
+          return;
         }
-      })
-    })
-    return promise
-  }
+        resolve(undefined);
+      });
+    });
+    return promise;
+  };
 }

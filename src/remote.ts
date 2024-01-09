@@ -38,6 +38,6 @@ export class Remote {
     if (!buttonId) {
       return;
     }
-    await this.irdeckApi.pushButton(buttonId)
+    await this.irdeckApi.pushButton(buttonId);
   };
 }
