@@ -1,4 +1,4 @@
-import { GetIrDataRequest, ListRemotesRequest, PushButtonRequest } from 'pirem-proto/gen/js/api/v1/pirem_service_pb'
+import { ListRemotesRequest, PushButtonRequest } from 'pirem-proto/gen/js/api/v1/pirem_service_pb'
 import { Remote } from 'pirem-proto/gen/js/api/v1/remote_pb';
 import { PiRemServiceClient } from 'pirem-proto/gen/js/api/v1/pirem_service_grpc_web_pb'
 

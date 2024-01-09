@@ -30,7 +30,6 @@
     "@types/google-protobuf": "^3.15.6",
     "google-protobuf": "^3.21.2",
     "grpc-web": "^1.4.2",
-    "napa": "^3.0.0",
     "pirem-proto": "github:NaKa2355/pirem-proto",
     "xhr2": "^0.2.1"
   },
