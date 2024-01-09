@@ -30,7 +30,7 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
     this.log.info('Aim API URL: ', this.config.aimUrl);
     this.log.info(`API polling interval: ${this.config.pollingIntervalMs} ms`);
     this.remotes = new Map();
-    this.irdeckApi = new IrdeckApi(this.config.aimUrl as string, this.config.piremUrl as string);
+    this.irdeckApi = new IrdeckApi(this.config.piremUrl as string);
     // When this event is fired it means Homebridge has restored all cached accessories from disk.
     // Dynamic Platform plugins should only register new accessories after this event was fired,
     // in order to ensure they weren't added to homebridge already. This event can also be used
@@ -67,14 +67,13 @@ export class ExampleHomebridgePlatform implements DynamicPlatformPlugin {
         this.remotes.set(uuid, existingRemote);
       } else {
         try {
-          const buttons = await this.irdeckApi.getButtons(remote.getId());
           this.remotes.set(
             uuid,
             new Remote(
               remote.getId(),
               remote.getName(),
               remote.getDeviceId(),
-              buttons,
+              remote.getButtonsList(),
               remote.getTag(),
               this.irdeckApi,
             ),

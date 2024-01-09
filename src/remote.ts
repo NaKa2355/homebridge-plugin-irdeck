@@ -1,5 +1,5 @@
 import { IrdeckApi } from './irdeckApi';
-import { Button } from 'irdeck-proto/gen/js/aim/api/v1/button_pb';
+import { Button } from 'pirem-proto/gen/js/api/v1/button_pb';
 
 export type ButtonName = string;
 export type ButtonId = string;
@@ -38,7 +38,6 @@ export class Remote {
     if (!buttonId) {
       return;
     }
-    const irData = await this.irdeckApi.getIrData(this.id, buttonId);
-    await this.irdeckApi.sendIrData(this.deviceId, irData);
+    await this.irdeckApi.pushButton(buttonId)
   };
 }
